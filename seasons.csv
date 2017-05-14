@@ -1,0 +1,40 @@
+name,seasonOneStartingMonth,seasonOneStartingDay,seasonOneEndingMonth,seasonOneEndingDay,seasonTwoStartingMonth,seasonTwoStartingDay,seasonTwoEndingMonth,seasonTwoEndingDay
+Cucumbers,6,1,10,15,,,,
+Lettuce,1,1,12,31,,,,
+Melons,7,1,10,1,,,,
+Peppers,7,1,11,1,,,,
+Tomatoes,5,15,10,15,,,,
+Watermelon,7,15,10,15,,,,
+"Beans, Fava",6,1,7,31,,,,
+"Beans, Bush",6,15,10,15,,,,
+"Beans, Pole",7,1,10,31,,,,
+Beets,1,1,12,31,,,,
+"Garlic, Green",4,1,6,1,10,15,12,15
+Celery Root,9,15,12,31,1,1,4,15
+Celery,9,15,12,15,,,,
+Eggplant,6,15,10,15,,,,
+"Garlic, Dry",7,15,12,31,1,1,3,1
+Greens,1,1,12,31,,,,
+"Herbs, Summer",6,15,10,1,,,,
+"Herbs, Winter",1,1,12,31,,,,
+"Onions, Dry & Shallots",1,1,4,15,7,15,12,31
+"Onions, Green",1,1,12,31,,,,
+Peas,6,1,10,15,,,,
+Potatoes,1,1,4,15,6,1,12,31
+Radishes & Turnips,1,1,12,31,,,,
+"Squash, Summer",6,1,10,15,,,,
+"Squash, Winter",9,15,12,31,1,1,1,30
+Peanuts,8,1,11,1,,,,
+Artichokes,7,15,10,15,,,,
+Strawberries,5,15,11,15,,,,
+Raspberries,7,1,11,15,,,,
+Cabbage,1,1,4,15,6,1,12,31
+Cauliflower,6,1,7,15,9,1,12,15
+Broccoli,6,1,12,1,,,,
+Brussels Sprouts,1,1,2,1,9,15,12,31
+Fennel,6,1,12,31,,,,
+Sweet Potatoes,9,15,12,31,,,,
+Carrots,1,1,5,1,6,15,12,31
+Corn,7,15,10,15,,,,
+Okra,7,15,10,1,,,,
+Parsnips,1,1,4,15,10,15,12,31

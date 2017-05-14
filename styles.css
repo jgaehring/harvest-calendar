@@ -1,0 +1,17 @@
+.bar {
+  fill: #90ddbb;
+}
+
+.even-bg {
+  fill: #ffffe0;
+}
+
+.odd-bg {
+  fill: #fffac9;
+}
+
+.chart text {
+  fill: black;
+  font-family: sans-serif;
+  text-anchor: end;
+}
