@@ -13,12 +13,13 @@ var margin = {top: 20, right: 20, bottom: 0, left: 175},
 var chart = d3.select(".chart")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+var body = chart.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")" )
   .attr("class", "chart-body");
 
 
-// Create horizontal scale function, then draw main axis
+// Create horizontal scale function, then draw the top axis
+// with a list of the months
 var x = d3.scaleTime()
   .domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
   .range([0, width]);
@@ -26,11 +27,11 @@ var xAxis = d3.axisTop(x)
   .ticks(d3.timeMonth.every(1))
   .tickFormat(d3.timeFormat("%B"))
   .tickSize(0);
-d3.select(".chart").append("g")
+chart.append("g")
   .attr("width", width + margin.left + margin.right)
   .attr("height", barHeight)
     .attr("transform", "translate(" + margin.left + ", " + barHeight + ")")
-    .attr("class", "months")
+  .attr("class", "months")
   .call(xAxis)
     .selectAll(".tick text")
       .style("text-anchor", "start")
@@ -82,13 +83,13 @@ function update(data) {
   });
   x.domain([0, d3.max(data, function(d) { return d.endFirst; })]);
 
-  chart.attr("height", barHeight * data.length);
+  body.attr("height", barHeight * data.length);
 
   /*
     Create an svg group to contain season bars and 
     background color for each crop in the array of items
   */
-  var bar = chart.selectAll("g")
+  var bar = body.selectAll("g")
     .data(data)
     .enter().append("g")
     .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
@@ -146,7 +147,7 @@ function update(data) {
     });
 
   // Create a grid
-  chart.append("g")
+  body.append("g")
       .attr("class", "grid")
       .attr("transform", "translate(0," + barHeight * data.length + ")")
       .call(make_x_gridlines()
@@ -157,3 +158,10 @@ function update(data) {
 
 // Import the data from CSV and call update()
 d3.csv("seasons.csv", update);
+
+d3.select("#download").on("click", function() {
+  d3.select(this)
+    .attr("href", 'data:application/octet-stream;base64,' + btoa(d3.select(".svg-container").html()))
+    .attr("download", "chart.svg") 
+
+})
