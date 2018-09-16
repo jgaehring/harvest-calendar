@@ -1,9 +1,9 @@
 /*
-  SETUP: Before creating drawing the data, 
+  SETUP: Before creating rendering the data, 
   create the basic layout for the chart.
 */
 
-// Set the margins, width and height, then draw the chart layout
+// Set the margins, width and height, then render the chart
 var barHeight = 20,
   fontHeight = barHeight * .75,
   padding = 10;
@@ -52,7 +52,7 @@ function calcDate(month, day) {
   return date;
 };
 
-// Makes gridlines, called at the very end of the data import
+// Makes gridlines, called after the bars are rendered
 function make_x_gridlines() {
     return d3.axisBottom(x)
         .ticks(12)
@@ -60,7 +60,7 @@ function make_x_gridlines() {
 
 /*
   UPDATE FUNCTION
-  All data is drawn to svg with this function, which can be
+  All data is rendered to svg with this function, which can be
   called by the d3.csv()'s callback function etc
 */
 function update(data) {
@@ -111,9 +111,9 @@ function update(data) {
     });
 
   /*
-    DRAW MAIN DATA BARS
-    Draw the first season range, then if there's a second
-    season range, draw it. Finally, draw the label for
+    DATA BARS
+    Render the first season range, then if there's a second
+    season range, render it. Finally, render the label for
     each season.
   */
   bar.append("rect")
