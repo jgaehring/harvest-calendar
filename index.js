@@ -101,12 +101,12 @@ function update(data) {
     .attr("width", function(d) {
       return x(12)
     })
-    .attr("class", function(d, i) {
+    .attr("fill", function(d, i) {
       let x = i % 2;
       if (x == 0) {
-        return "bar-bg even-bg"
+        return "#ffffe0"
       } else {
-        return "bar-bg odd-bg"
+        return "#fffac9"
       }
     });
 
@@ -124,7 +124,8 @@ function update(data) {
     .attr("width", function(d) {
       return x(d.endFirst - d.startFirst);
     })
-    .attr("height", barHeight - 1);
+    .attr("height", barHeight - 1)
+    .attr("fill", "#90ddbb");
   bar.append("rect")
     .attr("class", "bar")
     .attr("x", function(d) {
@@ -137,11 +138,15 @@ function update(data) {
         return x(d.endSecond - d.startSecond);
       } else {return 0;}
     })
-    .attr("height", barHeight - 1);
+    .attr("height", barHeight - 1)
+    .attr("fill", "#90ddbb");
   bar.append("text")
     .attr("x", - padding)
     .attr("dy", (barHeight / 2) + (fontHeight / 2))
     .style("font-size", fontHeight)
+    .attr("fill", "black")
+    .attr("text-anchor", "end")
+    .attr("font-family", "sans-serif")
     .text(function(d) {
       return d.name;
     });
