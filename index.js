@@ -1,15 +1,15 @@
+/**
+  * SETUP: Before creating drawing the data, 
+  * create the basic layout for the chart.
+**/
+
+// Set the margins, width and height, then draw the chart layout
 var barHeight = 20,
   fontHeight = barHeight * .75,
   padding = 10;
-
 var margin = {top: 20, right: 20, bottom: 0, left: 175},
   width = 875 - margin.left - margin.right,
   height = 1000 - margin.top - margin.bottom;
-
-var x = d3.scaleTime()
-  .domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
-  .range([0, width]);
-
 var chart = d3.select(".chart")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
@@ -17,24 +17,26 @@ var chart = d3.select(".chart")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")" )
   .attr("class", "chart-body");
 
+
+// Create horizontal scale function, then draw main axis
+var x = d3.scaleTime()
+  .domain([new Date(2012, 0, 1), new Date(2012, 11, 31)])
+  .range([0, width]);
 var xAxis = d3.axisTop(x)
   .ticks(d3.timeMonth.every(1))
   .tickFormat(d3.timeFormat("%B"))
   .tickSize(0);
-
 d3.select(".chart").append("g")
-.attr("width", width + margin.left + margin.right)
-.attr("height", barHeight)
-  .attr("transform", "translate(" + margin.left + ", " + barHeight + ")")
-  .attr("class", "months")
-.call(xAxis)
-  .selectAll(".tick text")
-    .style("text-anchor", "start")
-    .attr("x", 6)
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", barHeight)
+    .attr("transform", "translate(" + margin.left + ", " + barHeight + ")")
+    .attr("class", "months")
+  .call(xAxis)
+    .selectAll(".tick text")
+      .style("text-anchor", "start")
+      .attr("x", 6)
 
-/**
-**/
-
+// Helper function for rounding dates to nearest half-month
 function calcDate(month, day) {
   let date = 0;
   if (day >= 20) {
@@ -49,11 +51,16 @@ function calcDate(month, day) {
   return date;
 };
 
+// Makes gridlines, called at the very end of the data import
 function make_x_gridlines() {
     return d3.axisBottom(x)
         .ticks(12)
 }
 
+/**
+  * DATA IMPORT
+  * All data is drawn to svg within the callback function.
+**/
 d3.csv("seasons.csv", function(data) {
   data.forEach(function(d) {
     d.startFirst = calcDate(d.seasonOneStartingMonth, d.seasonOneStartingDay);
@@ -77,7 +84,8 @@ d3.csv("seasons.csv", function(data) {
   chart.attr("height", barHeight * data.length);
 
   /**
-    * Create an svg group to contain season bars and background color for each crop in the array of items
+    * Create an svg group to contain season bars and 
+    * background color for each crop in the array of items
   **/
   var bar = chart.selectAll("g")
     .data(data)
@@ -85,15 +93,13 @@ d3.csv("seasons.csv", function(data) {
     .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
 
-/**
-  * Add an alternating background shade with even & odd indices.
-**/
+  // Add an alternating background shade with even & odd indices.
   bar.append("rect")
     .attr("height", barHeight)
     .attr("width", function(d) {
       return x(12)
     })
-    .attr("class", function(d, i) {   // perhaps rewrite this to add a class, rather than fill
+    .attr("class", function(d, i) {
       let x = i % 2;
       if (x == 0) {
         return "bar-bg even-bg"
@@ -102,7 +108,12 @@ d3.csv("seasons.csv", function(data) {
       }
     });
 
-
+  /**
+    * DRAW MAIN DATA BARS
+    * Draw the first season range, then if there's a second
+    * season range, draw it. Finally, draw the label for
+    * each season.
+  **/
   bar.append("rect")
     .attr("class", "bar")
     .attr("x", function(d) {
@@ -133,12 +144,13 @@ d3.csv("seasons.csv", function(data) {
       return d.name;
     });
 
-    chart.append("g")
-        .attr("class", "grid")
-        .attr("transform", "translate(0," + barHeight * data.length + ")")
-        .call(make_x_gridlines()
-            .tickSize(-height)
-            .tickFormat("")
-        )
+  // Create a grid
+  chart.append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + barHeight * data.length + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
 
 });
