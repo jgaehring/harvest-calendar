@@ -1,7 +1,7 @@
-/**
-  * SETUP: Before creating drawing the data, 
-  * create the basic layout for the chart.
-**/
+/*
+  SETUP: Before creating drawing the data, 
+  create the basic layout for the chart.
+*/
 
 // Set the margins, width and height, then draw the chart layout
 var barHeight = 20,
@@ -57,11 +57,12 @@ function make_x_gridlines() {
         .ticks(12)
 }
 
-/**
-  * DATA IMPORT
-  * All data is drawn to svg within the callback function.
-**/
-d3.csv("seasons.csv", function(data) {
+/*
+  UPDATE FUNCTION
+  All data is drawn to svg with this function, which can be
+  called by the d3.csv()'s callback function etc
+*/
+function update(data) {
   data.forEach(function(d) {
     d.startFirst = calcDate(d.seasonOneStartingMonth, d.seasonOneStartingDay);
     d.endFirst = calcDate(d.seasonOneEndingMonth, d.seasonOneEndingDay);
@@ -83,10 +84,10 @@ d3.csv("seasons.csv", function(data) {
 
   chart.attr("height", barHeight * data.length);
 
-  /**
-    * Create an svg group to contain season bars and 
-    * background color for each crop in the array of items
-  **/
+  /*
+    Create an svg group to contain season bars and 
+    background color for each crop in the array of items
+  */
   var bar = chart.selectAll("g")
     .data(data)
     .enter().append("g")
@@ -108,12 +109,12 @@ d3.csv("seasons.csv", function(data) {
       }
     });
 
-  /**
-    * DRAW MAIN DATA BARS
-    * Draw the first season range, then if there's a second
-    * season range, draw it. Finally, draw the label for
-    * each season.
-  **/
+  /*
+    DRAW MAIN DATA BARS
+    Draw the first season range, then if there's a second
+    season range, draw it. Finally, draw the label for
+    each season.
+  */
   bar.append("rect")
     .attr("class", "bar")
     .attr("x", function(d) {
@@ -152,5 +153,7 @@ d3.csv("seasons.csv", function(data) {
           .tickSize(-height)
           .tickFormat("")
       )
+}
 
-});
+// Import the data from CSV and call update()
+d3.csv("seasons.csv", update);
