@@ -6,7 +6,54 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <a id="download" href="#">Download</a>
+    <form class="" action="index.html" method="post">
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Season One Starts</th>
+          <th>Season One Ends</th>
+          <th>Season Two Starts</th>
+          <th>Season Two Ends</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <input type="text" name="0-name" value="Winter Squash">
+            </td>
+            <td>
+              <input type="date" name="0-start-one" value="2018-01-01">
+            </td>
+            <td>
+              <input type="date" name="0-end-one" value="2018-01-31">
+            </td>
+            <td>
+              <input type="date" name="0-start-two" value="2018-09-01">
+            </td>
+            <td>
+              <input type="date" name="0-end-two" value="2018-12-31">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="text" name="1-name" value="">
+            </td>
+            <td>
+              <input type="date" name="1-start-one" value="">
+            </td>
+            <td>
+              <input type="date" name="1-end-one" value="">
+            </td>
+            <td>
+              <input type="date" name="1-start-two" value="">
+            </td>
+            <td>
+              <input type="date" name="1-end-two" value="">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <a id="download" href="#">Download</a>
+    </form>
     <div class="svg-container">
       <svg class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>

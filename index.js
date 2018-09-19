@@ -170,3 +170,45 @@ d3.select("#download").on("click", function() {
     .attr("download", "chart.svg") 
 
 })
+
+const inputs = document.querySelectorAll('input');
+function changeHandler(event) {
+  let data = [];
+  inputs.forEach(input => {
+    const i = input.name.split("-")[0];
+    const position = input.name.split("-")[1];
+    const season = input.name.split("-")[2];
+    if (data[i] === undefined) { data[i] = {}; } 
+    switch (input.name.split("-")[1]) {
+      case "name":
+        data[i].name = input.value;
+        break;
+      case "start":
+        if (input.name.split("-")[2] === "one") {
+          data[i].seasonOneStartingMonth = input.value.split("-")[1]
+          data[i].seasonOneStartingDay = input.value.split("-")[2]
+        }
+        data[i].seasonTwoStartingMonth = input.value.split("-")[1]
+        data[i].seasonTwoStartingDay = input.value.split("-")[2]
+        break;
+      case "end": 
+        if (input.name.split("-")[2] === "one") {
+          data[i].seasonOneEndingMonth = input.value.split("-")[1]
+          data[i].seasonOneEndingDay = input.value.split("-")[2]
+        }
+        data[i].seasonTwoEndingMonth = input.value.split("-")[1]
+        data[i].seasonTwoEndingDay = input.value.split("-")[2]
+        break;
+      default:
+        
+    }
+    console.log(`${input.name.toUpperCase()}\n`
+    + `index: ${i}, position: ${position}, season: ${season}`);
+  })
+  console.log(data);
+}
+
+console.log(inputs)
+inputs.forEach(input => {
+  input.onchange = changeHandler;
+});
