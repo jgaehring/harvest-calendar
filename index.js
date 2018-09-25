@@ -47,7 +47,7 @@ function calcDate(month, day) {
   } else if (day <= 10) {
     date = month - 1;
   } else {
-    console.log("Error calculating date.");
+    console.log(`Error calculating date; Month: ${month}, Day: ${day}.`);
   }
   return date;
 };
@@ -81,6 +81,7 @@ function update(data) {
     }
     return 0;
   });
+  // What does this do???
   x.domain([0, d3.max(data, function(d) { return d.endFirst; })]);
 
   body.attr("height", barHeight * data.length);
@@ -89,14 +90,17 @@ function update(data) {
     Create an svg group to contain season bars and 
     background color for each crop in the array of items
   */
-  var bar = body.selectAll("g")
-    .data(data)
-    .enter().append("g")
-    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+  var crop = body.selectAll("g")
+    .exit().remove()
+    .data(data);
 
+  crop = crop.enter()
+    .append("g").merge(crop)
+      .attr("class", "crop")
+      .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
   // Add an alternating background shade with even & odd indices.
-  bar.append("rect")
+  crop.append("rect")
     .attr("height", barHeight)
     .attr("width", function(d) {
       return x(12)
@@ -116,8 +120,8 @@ function update(data) {
     season range, render it. Finally, render the label for
     each season.
   */
-  bar.append("rect")
-    .attr("class", "bar")
+  crop.append("rect")
+    .attr("class", "bar season-one")
     .attr("x", function(d) {
       return x(d.startFirst);
     })
@@ -126,8 +130,8 @@ function update(data) {
     })
     .attr("height", barHeight - 1)
     .attr("fill", "#90ddbb");
-  bar.append("rect")
-    .attr("class", "bar")
+  crop.append("rect")
+    .attr("class", "bar season-two")
     .attr("x", function(d) {
       if (d.startFirst) {
         return x(d.startSecond);
@@ -140,7 +144,7 @@ function update(data) {
     })
     .attr("height", barHeight - 1)
     .attr("fill", "#90ddbb");
-  bar.append("text")
+  crop.append("text")
     .attr("x", - padding)
     .attr("dy", (barHeight / 2) + (fontHeight / 2))
     .style("font-size", fontHeight)
@@ -151,6 +155,7 @@ function update(data) {
       return d.name;
     });
 
+  console.log(data.length);
   // Create a grid
   body.append("g")
       .attr("class", "grid")
@@ -162,7 +167,9 @@ function update(data) {
 }
 
 // Import the data from CSV and call update()
-d3.csv("seasons.csv", update);
+// d3.csv("seasons.csv", function(csvData) {
+//   update(csvData.concat(readFormInputs(inputs)))
+// });
 
 d3.select("#download").on("click", function() {
   d3.select(this)
@@ -173,6 +180,13 @@ d3.select("#download").on("click", function() {
 
 const inputs = document.querySelectorAll('input');
 function changeHandler(event) {
+  d3.csv("seasons.csv", function(csvData) {
+    update(csvData.concat(readFormInputs(inputs)))
+    console.log(csvData.concat(readFormInputs(inputs)));
+  });
+}
+
+function readFormInputs(formInputs) {
   let data = [];
   inputs.forEach(input => {
     const i = input.name.split("-")[0];
@@ -203,12 +217,14 @@ function changeHandler(event) {
         
     }
     console.log(`${input.name.toUpperCase()}\n`
-    + `index: ${i}, position: ${position}, season: ${season}`);
+    + `index: ${i}, position: ${position} at ${input.value}, season: ${season}`);
   })
-  console.log(data);
+  return data;
 }
 
 console.log(inputs)
-inputs.forEach(input => {
-  input.onchange = changeHandler;
-});
+// inputs.forEach(input => {
+//   input.onchange = changeHandler;
+// });
+d3.selectAll('input').on('input', changeHandler);
+changeHandler()
