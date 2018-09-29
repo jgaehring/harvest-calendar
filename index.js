@@ -178,11 +178,54 @@ d3.select("#download").on("click", function() {
 
 })
 
+// Based on Dan Abramov's Egghead Redux Tutorial (pt 7):
+// https://egghead.io/lessons/react-redux-implementing-store-from-scratch
+const createStore = (reducer) => {
+  let state;
+  let listeners = [];
+  
+  const getState = () => state;
+  
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    listeners.forEach(listener => listener());
+  };
+  
+  const subscribe = (listener) => {
+    listeners.push(listener);
+    // Provide a function which can be called to remove the listener
+    return () => {
+      listeners = listeners.filter(l => l !== listener)
+    };
+  };
+  
+  // Initialize the state
+  dispatch({});
+  
+  return { getState, dispatch, subscribe };
+}
+
+const cropReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_CROP':
+      return [
+        ...state,
+        { ...action.payload }
+      ]
+  }
+}
+
+const cropStore = createStore(cropReducer);
+
 const inputs = document.querySelectorAll('input');
 function changeHandler(event) {
   d3.csv("seasons.csv", function(csvData) {
     update(csvData.concat(readFormInputs(inputs)))
-    console.log(csvData.concat(readFormInputs(inputs)));
+    // console.log(csvData.concat(readFormInputs(inputs)));
+    readFormInputs(inputs).forEach(crop => {
+      cropStore.dispatch({type: "ADD_CROP", payload: crop})
+    });
+    console.log("STORE: ", cropStore.getState());
   });
 }
 
